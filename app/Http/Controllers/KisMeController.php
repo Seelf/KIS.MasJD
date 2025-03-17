@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\KisMeService;
 
-class KISAPI extends Controller
+class KisMeController extends Controller
 {
     protected $kisMeService;
 

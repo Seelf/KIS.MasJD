@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KISAPI;
+use App\Services\KisMeService;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +19,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/kis-me/devices', [KISAPI::class, 'getDevices']);
     Route::post('/kis-me/triggers/{triggerId}', [KISAPI::class, 'triggerDevice']);
+    Route::get('/kis-me/test', function (KisMeService $kisMeService) {
+        return $kisMeService->testApiConnection();
+    });
 });
 
 require __DIR__.'/auth.php';

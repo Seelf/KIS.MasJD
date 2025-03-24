@@ -20,7 +20,12 @@ class KISAPI extends Controller
     public function getDevices()
     {
         $devices = $this->kisMeService->getDevices();
+<<<<<<< HEAD
         return view('layouts.devices', ['devices' => $devices]);
+=======
+        return view('kis.devices', compact('devices'));
+//        return response()->json($devices);
+>>>>>>> c98dacacfff34e2d11b7f9e3248c8641f19e9de1
     }
 
     /**

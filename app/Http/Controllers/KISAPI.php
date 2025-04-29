@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use App\Services\KisMeService;
+use Illuminate\Support\Facades\Http;
 
 class KISAPI extends Controller
 {
@@ -20,12 +22,41 @@ class KISAPI extends Controller
     public function getDevices()
     {
         $devices = $this->kisMeService->getDevices();
-<<<<<<< HEAD
-        return view('layouts.devices', ['devices' => $devices]);
-=======
         return view('kis.devices', compact('devices'));
-//        return response()->json($devices);
->>>>>>> c98dacacfff34e2d11b7f9e3248c8641f19e9de1
+        //return response()->json($devices);
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function setLed(Request $request)
+    {
+        $request->validate([
+            'device_urn' => 'required|string',
+            'color'      => 'required|string',
+            'flashing'   => 'required|string',
+            'target'     => 'required|string',
+        ]);
+
+        $flashing = false;
+
+        if($request->flashing == 'true') {
+            $flashing = true;
+        }
+
+        $url = "https://api.kisme.com/kisapi/v1/assets/" . $request->device_urn . "/setLed";
+
+        $response = Http::withHeaders([
+            'Content-Type'  => 'application/json',
+            'X-API-KEY'     => "440b837800e64923bae27c7e90ef9759",
+            'X-CLIENT-ID'   => "ef61d0ef-198a-43ac-887b-fb1a305aa5a0"
+        ])->post($url, [
+            'color'    => $request->color,
+            'flashing' => $flashing,
+            'target'   => $request->target,
+        ]);
+
+        return back()->with(compact('response'));
     }
 
     /**

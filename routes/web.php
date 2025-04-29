@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/kis-me/test', function (KisMeService $kisMeService) {
         return $kisMeService->testApiConnection();
     });
+    Route::post('/set-led', [KISAPI::class, 'setLed'])->name('set.led');
 });
 
 require __DIR__.'/auth.php';

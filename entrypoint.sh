@@ -1,16 +1,29 @@
 #!/bin/bash
 set -e
 
-# Instalacja zależności jeśli vendor nie istnieje
-if [ ! -d "/app/vendor" ]; then
-    echo "Installing Composer dependencies..."
-    composer install
+cd /app
+
+if [ ! -f ".env" ]; then
+    echo "[entrypoint] .env not found, creating from .env.example"
     cp .env.example .env
+fi
+
+if [ ! -d "vendor" ]; then
+    echo "[entrypoint] Installing Composer dependencies..."
+    composer install
+fi
+
+if grep -q "^APP_KEY=$" .env; then
+    echo "[entrypoint] Generating APP_KEY..."
     php artisan key:generate
 fi
 
-# Opcjonalnie migracje
-# php artisan migrate --force
+if [ ! -f "public/build/manifest.json" ]; then
+    echo "[entrypoint] Building frontend with Vite..."
+    npm install && npm run build
+fi
 
-# Start standardowy
-exec php artisan serve --host=0.0.0.0 --port=8000
+echo "[entrypoint] Running migrations..."
+php artisan migrate --force
+
+php artisan serve --host=0.0.0.0 --port=8000

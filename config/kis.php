@@ -6,4 +6,5 @@ return [
     'client_id'      => env('KIS_CLIENT_ID'),
     'asset_id'       => env('KIS_ASSET_ID'),
     'asset_group_id' => env('KIS_ASSET_GROUP_ID'),
+    'urn'            => env('KIS_DEVICE_URN')
 ];

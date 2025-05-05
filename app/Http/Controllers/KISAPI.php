@@ -46,12 +46,12 @@ class KISAPI extends Controller
             $flashing = true;
         }
 
-        $url = "https://api.kisme.com/kisapi/v1/assets/" . $request->device_urn . "/setLed";
+        $url = env('KIS_SERVER_URL_BASE') . '/assets/' . $request->device_urn . "/setLed";
 
         $response = Http::withHeaders([
             'Content-Type'  => 'application/json',
-            'X-API-KEY'     => "440b837800e64923bae27c7e90ef9759",
-            'X-CLIENT-ID'   => "ef61d0ef-198a-43ac-887b-fb1a305aa5a0"
+            'X-API-KEY'     => env('KIS_API_KEY'),
+            'X-CLIENT-ID'   => env('KIS_CLIENT_ID')
         ])->post($url, [
             'color'    => $request->color,
             'flashing' => $flashing,

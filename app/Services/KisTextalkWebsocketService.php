@@ -10,6 +10,7 @@ class KisTextalkWebsocketService
 {
     protected string $serverUrl;
     protected string $apiKey;
+    protected string $urn;
     protected string $clientId;
     protected int $assetId;
     protected int $assetGroupId;
@@ -18,6 +19,7 @@ class KisTextalkWebsocketService
     {
         $this->serverUrl = config('kis.server_url');
         $this->apiKey = config('kis.api_key');
+        $this->urn = config('kis.urn');
         $this->clientId = config('kis.client_id');
         $this->assetId = (int) config('kis.asset_id');
         $this->assetGroupId = (int) config('kis.asset_group_id');

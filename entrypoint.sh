@@ -26,4 +26,7 @@ fi
 echo "[entrypoint] Running migrations..."
 php artisan migrate --force
 
+echo "[entrypoint] Starting kis:textalk-listen..."
+php artisan kis:textalk-listen &
+
 php artisan serve --host=0.0.0.0 --port=8000

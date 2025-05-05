@@ -102,24 +102,6 @@ Laravel is accessible and powerful, ideal for robust full-stack apps.
 
 ---
 
-## 💼 Sponsors
-
-Thanks to [Laravel Partners](https://partners.laravel.com) for supporting ongoing development.
-
----
-
-## 🤝 Contributing
-
-Thank you for considering contributing! See the [contribution guide](https://laravel.com/docs/contributions).
-
----
-
-## 🔐 Security
-
-Please report security issues to [taylor@laravel.com](mailto:taylor@laravel.com).
-
----
-
 ## 📝 License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

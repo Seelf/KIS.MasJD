@@ -36,3 +36,16 @@ To start the application locally:
 git clone https://github.com/Seelf/KIS.MasJD
 cd KIS.MasJD
 docker compose up -d
+```
+
+Then:
+```bash
+docker compose logs -f laravel
+```
+and wait for:
+
+```bash
+2025-05-05 08:49:16    INFO  Server running on [http://0.0.0.0:8000].  
+2025-05-05 08:49:16 
+2025-05-05 08:49:16   Press Ctrl+C to stop the server
+```

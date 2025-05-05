@@ -49,3 +49,9 @@ and wait for:
 2025-05-05 08:49:16 
 2025-05-05 08:49:16   Press Ctrl+C to stop the server
 ```
+
+Then open:
+
+```bash
+http://localhost:8000
+```

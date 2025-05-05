@@ -12,9 +12,10 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
+      - ./:/app
     depends_on:
       - mariadb
+    entrypoint: ["/app/entrypoint.sh"]
 
   mariadb:
     image: bitnami/mariadb:latest

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use WebSocket\Client;
 use Illuminate\Support\Facades\Log;
+use App\Models\Measurement;
 
 class KisTextalkWebsocketService
 {
@@ -29,10 +30,10 @@ class KisTextalkWebsocketService
         $subscriptionId = $subscription['subscriptionId'];
 
         try {
-            $client = new Client($wsUri, ['timeout' => 60]);
+            $client = new Client($wsUri, ['timeout' => 3600]);
             echo "SubID:" . $subscriptionId . "\n";
 
-            // STOMP CONNECT
+            //STOMP CONNECT
             $connectFrame = "CONNECT\n" .
                 "accept-version:1.2\n" .
                 "host:pubsub.centersightcloud.com\n" .
@@ -44,7 +45,7 @@ class KisTextalkWebsocketService
                 throw new \RuntimeException("Połączenie STOMP nieudane: {$response}");
             }
 
-//             STOMP SUBSCRIBE
+            //STOMP SUBSCRIBE
             $subscribeFrame = "SUBSCRIBE\n" .
                 "id:{$subscriptionId}\n" .
                 "destination:/topic/{$subscriptionId}\n" .
@@ -53,33 +54,28 @@ class KisTextalkWebsocketService
             $client->send($subscribeFrame);
 
             while(true) {
-                echo $response = $client->receive();
+                $response = $client->receive();
+
+                // Parsuj STOMP frame
+                $parts = explode("\n\n", $response, 2);
+                if (count($parts) === 2) {
+                    $body = rtrim($parts[1], "\x00\r\n");
+
+                    $data = json_decode($body, true);
+
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        $this->handleMessage($data);
+                    } else {
+                        echo "Błąd jsona z websocket\n";
+                        logger()->error('Niepoprawny JSON z WebSocket', ['raw' => $body]);
+                    }
+                } else {
+                    echo "Błąd ramki stomp\n";
+                    logger()->warning('Niepoprawna ramka STOMP', ['raw' => $response]);
+                }
+
                 usleep(100000); // 0.1 sekundy
             }
-
-//            echo "✅ Połączono i zasubskrybowano na /topic/{$subscriptionId}\n";
-//
-//            // Nasłuch loop
-//            while (true) {
-//                echo "Wykonuje \n" . " adres: " . $wsUri . "\n apikey: " . $this->apiKey . "\n clientid: " . $this->clientId . "\n AssetID:" . $this->assetId . "\n\n";
-//                $response = $client->receive();
-//                if ($response === false) {
-//                    echo "Brak odpowiedzi od serwera WebSocket. \n";
-//                    break;
-//                }
-//
-//                $message = $this->parseStompMessage($response);
-//                if ($message && isset($message['body'])) {
-//                    echo $message['body'];
-//                    $payload = json_decode($message['body'], true);
-////                    Log::info('KIS websocket message', ['payload' => $payload]);
-//                    echo "KIS websocket message received\n";
-//                    $this->handleMessage($payload);
-//                }
-//
-//                // Opóźnienie, aby nie obciążać CPU
-//                usleep(500000); // 0.5 sekundy
-//            }
         } catch (\Exception $e) {
             Log::error('Błąd połączenia z WebSocket', ['error' => $e->getMessage()]);
             echo "Błąd połączenia z WebSocket\n" . $e->getMessage() . " \n";
@@ -104,5 +100,38 @@ class KisTextalkWebsocketService
         }
 
         return $response->json();
+    }
+
+    protected function handleMessage(array $data): void
+    {
+        $info = $data['info'] ?? null;
+
+        logger()->info('Dane do zapisu Measurement', [
+            'data' => $data
+        ]);
+
+        if (!is_array($info) || !isset($info['key'])) {
+            logger()->warning('Niepoprawny format wiadomości KIS', [
+                'received_data' => $data
+            ]);
+            return;
+        }
+
+        try {
+            Measurement::create([
+                'node_id'           => $data['nodeId'] ?? 0,
+                'key'               => $info['key'],
+                'value'             => is_scalar($info['value']) ? (string) $info['value'] : json_encode($info['value']),
+                'info_timestamp'    => $info['timestamp'] ?? now(),
+                'message_timestamp' => $data['timestamp'] ?? now(),
+                'message_type'      => $data['type'] ?? null,
+                'json_type'         => $data['jsontype'] ?? null,
+            ]);
+        } catch (\Throwable $e) {
+            logger()->error('Błąd podczas zapisu Measurement', [
+                'error' => $e->getMessage(),
+                'data' => $data
+            ]);
+        }
     }
 }

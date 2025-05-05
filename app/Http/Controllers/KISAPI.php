@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Measurement;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use App\Services\KisMeService;
@@ -22,7 +23,8 @@ class KISAPI extends Controller
     public function getDevices()
     {
         $devices = $this->kisMeService->getDevices();
-        return view('kis.devices', compact('devices'));
+        $measurements = Measurement::latest('info_timestamp')->take(20)->get();
+        return view('kis.devices', compact('devices', 'measurements'));
         //return response()->json($devices);
     }
 

@@ -48,7 +48,34 @@
                     <button type="submit">Ustaw LED</button>
                 </form>
 
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <h3 class="text-lg font-semibold mb-2">Odebrane dane z KIS</h3>
+                        <table class="w-full border-collapse border border-gray-300">
+                            <thead>
+                            <tr class="bg-gray-200 dark:bg-gray-700">
+                                <th class="border border-gray-300 p-2">ID</th>
+                                <th class="border border-gray-300 p-2">Node ID</th>
+                                <th class="border border-gray-300 p-2">Key</th>
+                                <th class="border border-gray-300 p-2">Value</th>
+                                <th class="border border-gray-300 p-2">Timestamp</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($measurements as $m)
+                                <tr class="border border-gray-300">
+                                    <td class="border border-gray-300 p-2">{{ $m->id }}</td>
+                                    <td class="border border-gray-300 p-2">{{ $m->node_id }}</td>
+                                    <td class="border border-gray-300 p-2">{{ $m->key }}</td>
+                                    <td class="border border-gray-300 p-2">{{ $m->value }}</td>
+                                    <td class="border border-gray-300 p-2">{{ $m->info_timestamp }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
                     <table class="w-full border-collapse border border-gray-300">
                         <thead>
                         <tr class="bg-gray-200 dark:bg-gray-700">

@@ -5,6 +5,7 @@ set -e
 if [ ! -d "/app/vendor" ]; then
     echo "Installing Composer dependencies..."
     composer install
+    cp .env.example .env
     php artisan key:generate
 fi
 

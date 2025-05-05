@@ -16,7 +16,7 @@ class KisMeService
 
     public function __construct()
     {
-        $this->serverUrl = config('kis.server_url');
+        $this->baseUrl = config('kis.base_url');
         $this->apiKey = config('kis.api_key');
         $this->urn = config('kis.urn');
         $this->clientId = config('kis.client_id');
@@ -27,7 +27,7 @@ class KisMeService
 
     public function testApiConnection()
     {
-        $url = "{$this->serverUrl}/assets/{$this->urn}/pressButton";
+        $url = "{$this->baseUrl}/assets/{$this->urn}/pressButton";
 
         $response = Http::withHeaders([
             'X-API-KEY' => $this->apiKey,
@@ -59,7 +59,7 @@ class KisMeService
             'Accept'        => 'application/json',
             'X-API-KEY'     => $this->apiKey, // Poprawiony nagłówek
             'X-CLIENT-ID'   => $this->clientId,
-        ])->get("https://api.kisme.com/kisapi/v1/assets"); // Upewniamy się, że URL jest zgodny z dokumentacją
+        ])->get("{$this->baseUrl}/assets"); // Upewniamy się, że URL jest zgodny z dokumentacją
 
         $data = $response->json() ?? []; // Zapewniamy, że zwracana jest tablica
 
@@ -75,7 +75,7 @@ class KisMeService
             'Authorization' => 'Bearer ' . $this->apiKey,
             'X-Client-ID'   => $this->clientId,
             'Content-Type'  => 'application/json',
-        ])->post("{$this->serverUrl}/triggers/{$triggerId}/activate", [
+        ])->post("{$this->baseUrl}/triggers/{$triggerId}/activate", [
             'device_id' => $deviceId,
             'parameters' => $params
         ]);

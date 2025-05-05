@@ -8,7 +8,7 @@ use App\Models\Measurement;
 
 class KisTextalkWebsocketService
 {
-    protected string $serverUrl;
+    protected string $baseUrl;
     protected string $apiKey;
     protected string $urn;
     protected string $clientId;
@@ -17,7 +17,7 @@ class KisTextalkWebsocketService
 
     public function __construct()
     {
-        $this->serverUrl = config('kis.server_url');
+        $this->baseUrl = config('kis.base_url');
         $this->apiKey = config('kis.api_key');
         $this->urn = config('kis.urn');
         $this->clientId = config('kis.client_id');
@@ -90,7 +90,7 @@ class KisTextalkWebsocketService
             'X-API-KEY'     => $this->apiKey,
             'X-CLIENT-ID'   => $this->clientId,
             'Content-Type'  => 'application/json',
-        ])->post($this->serverUrl, [
+        ])->post($this->baseUrl . "/websockets", [
             'assetIds'       => [$this->assetId],
             'subscribeTo'    => 'datapoint',
         ]);

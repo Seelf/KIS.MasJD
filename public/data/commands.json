@@ -1,0 +1,82 @@
+{
+    "wsciekla jolka": {
+        "message": "Ustawiam LED1 i LED2 na czerwony (wściekłość 🔥)",
+        "actions": [
+            {
+                "target": "led2",
+                "color": "red",
+                "flashing": true
+            },
+            {
+                "target": "led1",
+                "color": "red",
+                "flashing": true
+            }
+        ]
+    },
+    "spokojny marek": {
+        "message": "Ustawiam LED1 i LED2 na niebieski (spokój 🧊)",
+        "actions": [
+            {
+                "target": "led1",
+                "color": "blue",
+                "flashing": false
+            },
+            {
+                "target": "led2",
+                "color": "blue",
+                "flashing": false
+            }
+        ]
+    },
+    "zolty lewy": {
+        "message": "Ustawiam LED1 na żółty ☀️",
+        "actions": [
+            {
+                "target": "led1",
+                "color": "yellow",
+                "flashing": false
+            }
+        ]
+    },
+    "zielony prawy": {
+        "message": "Ustawiam LED2 na zielony 🌿",
+        "actions": [
+            {
+                "target": "led2",
+                "color": "green",
+                "flashing": false
+            }
+        ]
+    },
+    "lol": {
+        "message": "ss",
+        "actions": [
+            {
+                "target": "led1",
+                "color": "green",
+                "flashing": false
+            },
+            {
+                "target": "led2",
+                "color": "green",
+                "flashing": false
+            }
+        ]
+    },
+    "lol3": {
+        "message": "jazda!!",
+        "actions": [
+            {
+                "target": "led1",
+                "color": "red",
+                "flashing": true
+            },
+            {
+                "target": "led2",
+                "color": "green",
+                "flashing": false
+            }
+        ]
+    }
+}

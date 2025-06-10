@@ -22,6 +22,16 @@
                         {{ __('Devices') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('kis-me.devices2')" :active="request()->routeIs('kis-me.devices2')">
+                        {{ __('Devices2') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('kis-me.messenger')" :active="request()->routeIs('kis-me.messenger')">
+                        {{ __('Messenger') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

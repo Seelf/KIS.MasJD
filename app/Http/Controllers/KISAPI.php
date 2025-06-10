@@ -23,10 +23,32 @@ class KISAPI extends Controller
     public function getDevices()
     {
         $devices = $this->kisMeService->getDevices();
-        $measurements = Measurement::latest('info_timestamp')->take(20)->get();
+$measurements = Measurement::latest('info_timestamp')->take(20)->get();
         return view('kis.devices', compact('devices', 'measurements'));
         //return response()->json($devices);
     }
+    public function getDevices2()
+    {
+        $devices2 = $this->kisMeService->getDevices();
+        $measurements2 = Measurement::latest('info_timestamp')->take(20)->get();
+        return view('kis.devices2', compact('devices2', 'measurements2'));
+        //return response()->json($devices);
+    }
+    public function getDevices3()
+    {
+        $devices3 = $this->kisMeService->getDevices();
+        return view('kis.messenger', compact('devices3'));
+        //return response()->json($devices);
+    }
+//     public function showDeviceStatus(Request $request)
+// {
+//     $deviceUrn = "urn:rafi:sbox:9c65f93cbf19";
+//     $status = $this->kisMeService->getLedStatus($deviceUrn);
+//     dd($status);
+
+//     return view('kis.devices2', compact('status'));
+// }
+
 
     /**
      * @throws ConnectionException

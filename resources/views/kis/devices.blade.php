@@ -31,7 +31,12 @@
                 <form class="p-4 text-gray-900 dark:text-gray-100" action="{{ route('set.led') }}" method="POST">
                     @csrf
                     <label>URN urządzenia:</label>
-                    <input type="text" name="device_urn" placeholder="urn:rafi:sbox:9c65f93cbf19" required>
+                    <input list="urn-list" name="device_urn" placeholder="urn:rafi:sbox:9c65f93cbf19" required>
+                    <datalist id="urn-list">
+                        @foreach ($devices as $device)
+                            <option value="{{ $device['urn'] }}">
+                        @endforeach
+                    </datalist>
 
                     <label>Kolor:</label>
                     <input type="text" name="color" placeholder="red" required>

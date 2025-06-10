@@ -82,4 +82,28 @@ class KisMeService
 
         return $response->json();
     }
+
+    public function getLedStatus(string $deviceUrn): ?array
+{
+    $url = "https://api.kisme.com/kisapi/v1/assets/{$deviceUrn}";
+
+    $response = Http::withHeaders([
+        'Accept'        => 'application/json',
+        'X-API-KEY'     => "440b837800e64923bae27c7e90ef9759",
+        'X-CLIENT-ID'   => "ef61d0ef-198a-43ac-887b-fb1a305aa5a0",
+    ])->get($url);
+
+    // Debug pełnej odpowiedzi, nie tylko JSON
+    logger()->info('KISME STATUS RESPONSE', [
+        'url' => $url,
+        'http_code' => $response->status(),
+        'response' => $response->body(),
+    ]);
+
+    if (!$response->successful()) {
+        return null;
+    }
+
+    return $response->json();
+}
 }
